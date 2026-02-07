@@ -417,6 +417,10 @@ input[type="file"] {
 
 /* Responsive */
 @media (max-width: 600px) {
+  body {
+    padding: 10px; /* Moins de padding sur les petits écrans */
+  }
+
   h1 {
     font-size: 2.5rem;
   }
@@ -430,76 +434,90 @@ input[type="file"] {
     width: 120px;
   }
 
-      .stats {
-
-          grid-template-columns: 1fr;
-
-      }
-
+  .stats {
+    grid-template-columns: 1fr;
   }
 
-  
+  /* Ajustements pour les cartes dans le layout principal */
+  .main-content-layout {
+    gap: 20px; /* Réduire l'espace entre les cartes */
+  }
 
-  /* Main Tab Layout */
+  .main-content-layout > .card {
+    flex: 1 1 100%; /* Les cartes prennent toute la largeur disponible */
+    min-width: unset; /* Supprimer la largeur minimale fixe */
+  }
 
+  /* Onglets principaux plus compacts */
   .main-tabs {
-
-      display: flex;
-
-      justify-content: center;
-
-      gap: 15px;
-
-      margin-bottom: 30px;
-
+    gap: 10px;
+    margin-bottom: 20px;
   }
-
-  
 
   .main-tab {
-
-      font-size: 1.2rem;
-
-      padding: 12px 30px;
-
-      background: var(--white);
-
-      color: var(--rain-blue);
-
-      border: 2px solid var(--sky-med);
-
-      box-shadow: none;
-
+    font-size: 1rem;
+    padding: 10px 20px;
   }
 
-  
-
-  .main-tab.active {
-
-      background: linear-gradient(135deg, var(--rain-blue), var(--rain-dark));
-
-      color: var(--white);
-
-      border-color: var(--rain-blue);
-
+  /* Style pour l'input de date sur mobile */
+  input[type="date"] {
+    -webkit-appearance: none; /* Supprimer le style par défaut sur WebKit */
+    -moz-appearance: none; /* Supprimer le style par défaut sur Firefox */
+    appearance: none;
+    background-color: var(--white);
+    border: 3px solid var(--sky-med);
+    border-radius: 15px;
+    padding: 15px 20px;
+    font-family: "Karla", sans-serif;
+    font-size: 1.1rem;
+    color: var(--rain-dark);
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%; /* Prend toute la largeur disponible */
+    box-sizing: border-box; /* Inclure padding et bordure dans la largeur */
   }
 
-  
-
-  .tab-content {
-
-      display: none;
-
+  input[type="date"]:focus {
+    outline: none;
+    border-color: var(--rain-blue);
+    box-shadow: 0 0 0 4px rgba(90, 154, 184, 0.2);
   }
 
-  
-
-  .tab-content.active {
-
-      display: block;
-
-      animation: fadeInUp 0.5s ease;
-
+  /* Flèche du sélecteur de date */
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.5) sepia(1) saturate(5) hue-rotate(180deg); /* Change la couleur de l'icône */
   }
+}
 
-  
+/* Main Tab Layout */
+.main-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.main-tab {
+  font-size: 1.2rem;
+  padding: 12px 30px;
+  background: var(--white);
+  color: var(--rain-blue);
+  border: 2px solid var(--sky-med);
+  box-shadow: none;
+}
+
+.main-tab.active {
+  background: linear-gradient(135deg, var(--rain-blue), var(--rain-dark));
+  color: var(--white);
+  border-color: var(--rain-blue);
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+  animation: fadeInUp 0.5s ease;
+}
