@@ -81,7 +81,6 @@ body::before {
   min-width: 480px;
 }
 
-
 /* Header */
 header {
   text-align: center;
@@ -417,6 +416,19 @@ input[type="file"] {
 
 /* Responsive */
 @media (max-width: 600px) {
+  .container {
+    padding: 0 10px;
+  }
+
+  .main-content-layout {
+    justify-content: center;
+  }
+
+  .main-content-layout > .card {
+    flex: 0 1 95%;
+    max-width: 520px; /* clé du confort visuel */
+    margin: 0 auto 20px auto;
+  }
   body {
     padding: 10px; /* Moins de padding sur les petits écrans */
   }
@@ -436,16 +448,6 @@ input[type="file"] {
 
   .stats {
     grid-template-columns: 1fr;
-  }
-
-  /* Ajustements pour les cartes dans le layout principal */
-  .main-content-layout {
-    gap: 20px; /* Réduire l'espace entre les cartes */
-  }
-
-  .main-content-layout > .card {
-    flex: 1 1 100%; /* Les cartes prennent toute la largeur disponible */
-    min-width: unset; /* Supprimer la largeur minimale fixe */
   }
 
   /* Onglets principaux plus compacts */

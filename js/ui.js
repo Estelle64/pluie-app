@@ -107,6 +107,26 @@ function saveRainfall() {
 }
 
 /**
+ * Enregistrer un commentaire pour une date
+ */
+function saveComment() {
+    const commentInput = document.getElementById('commentInput');
+    const rainfallDateInput = document.getElementById('rainfallDateInput');
+    if (!commentInput || !rainfallDateInput) return;
+
+    const comment = commentInput.value;
+    const date = rainfallDateInput.value;
+
+    if (!date) {
+        showNotification('Veuillez sélectionner une date pour le commentaire', 'warning');
+        return;
+    }
+
+    setCommentForDate(date, comment);
+    showNotification(`✓ Commentaire (${date}) enregistré !`, 'success');
+}
+
+/**
  * Afficher une notification temporaire
  */
 function showNotification(message, type = 'success') {
@@ -151,6 +171,13 @@ function fillTodaysInputs() {
         tempMorningInput.value = todayTemp.morning !== null ? todayTemp.morning : '';
         tempAfternoonInput.value = todayTemp.afternoon !== null ? todayTemp.afternoon : '';
     }
+
+    // Commentaires
+    const commentInput = document.getElementById('commentInput');
+    if (commentInput && rainfallDateInput) { // Comments are tied to rainfallDateInput
+        const selectedDate = rainfallDateInput.value;
+        commentInput.value = getCommentForDate(selectedDate);
+    }
 }
 
 /**
@@ -172,4 +199,12 @@ function initUIEvents() {
 
     // Event listener pour le changement de date de pluie
     document.getElementById('rainfallDateInput')?.addEventListener('change', fillTodaysInputs);
+
+    // Event listener pour la touche "Entrée" dans le commentaire
+    document.getElementById('commentInput')?.addEventListener('keypress', e => {
+        if (e.key === 'Enter' && !e.shiftKey) { // Allow Shift+Enter for new line
+            e.preventDefault(); // Prevent default new line
+            saveComment();
+        }
+    });
 }

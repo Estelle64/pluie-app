@@ -6,7 +6,8 @@
 const WEATHER_DATA_KEY = 'weather_data';
 let weatherData = {
     rainfall: {},
-    temperature: {}
+    temperature: {},
+    comments: {} // Nouvelle clé pour les commentaires
 };
 
 /**
@@ -20,11 +21,12 @@ function loadData() {
             // Fusionner pour assurer la compatibilité ascendante
             weatherData = {
                 rainfall: data.rainfall || {},
-                temperature: data.temperature || {}
+                temperature: data.temperature || {},
+                comments: data.comments || {} // Charger les commentaires
             };
         } catch (error) {
             console.error('Erreur lors du chargement des données:', error);
-            weatherData = { rainfall: {}, temperature: {} };
+            weatherData = { rainfall: {}, temperature: {}, comments: {} };
         }
     }
 }
@@ -80,6 +82,21 @@ function setTemperatureForDate(date, morning, afternoon) {
     saveData();
 }
 
+// --- Fonctions Commentaires ---
+
+function getCommentForDate(date) {
+    return weatherData.comments[date] || '';
+}
+
+function setCommentForDate(date, comment) {
+    if (comment.trim() === '') {
+        delete weatherData.comments[date]; // Supprimer si le commentaire est vide
+    } else {
+        weatherData.comments[date] = comment;
+    }
+    saveData();
+}
+
 // --- Fonctions communes ---
 
 /**
@@ -127,6 +144,9 @@ function importData(event) {
             if (imported.temperature) {
                 weatherData.temperature = { ...weatherData.temperature, ...imported.temperature };
             }
+            if (imported.comments) { // Fusionner les commentaires
+                weatherData.comments = { ...weatherData.comments, ...imported.comments };
+            }
 
             saveData();
             
@@ -135,7 +155,8 @@ function importData(event) {
             updateHistory();
             updateChart();
             updateTemperatureCharts();
-            
+            fillTodaysInputs(); // Mettre à jour les inputs après import
+
             showNotification('✓ Données importées avec succès !', 'success');
         } catch (error) {
             console.error('Erreur lors de l\'importation:', error);
@@ -172,7 +193,7 @@ function checkBackupReminder() {
     updateLastBackupDisplay();
     
     const lastExport = localStorage.getItem('last_export_date');
-    const hasData = Object.keys(weatherData.rainfall).length > 0 || Object.keys(weatherData.temperature).length > 0;
+    const hasData = Object.keys(weatherData.rainfall).length > 0 || Object.keys(weatherData.temperature).length > 0 || Object.keys(weatherData.comments).length > 0;
 
     if (!lastExport && hasData) {
         setTimeout(() => {

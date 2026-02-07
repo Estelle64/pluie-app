@@ -91,6 +91,25 @@
           </h2>
           <div class="history-list" id="historyList"></div>
         </div>
+
+        <!-- Section Commentaires -->
+        <div class="card">
+          <h2
+            style="
+              font-family: &quot;Crimson Pro&quot;, serif;
+              color: var(--rain-dark);
+              margin-bottom: 15px;
+            "
+          >
+            Commentaires
+          </h2>
+          <div class="input-section">
+            <textarea id="commentInput" placeholder="Ajouter un commentaire pour cette date..." rows="4"></textarea>
+            <button class="btn-primary" onclick="saveComment()">
+              Enregistrer Commentaire
+            </button>
+          </div>
+        </div>
       </div>
 
       <div id="tempContent" class="tab-content">
