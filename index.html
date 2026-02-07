@@ -3,11 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Journal de Pluie</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;600&family=Karla:wght@400;600&display=swap"
-      rel="stylesheet"
-    />
+    <title>Journal météo</title>
+    <link href="image\meteo.jpg" rel="stylesheet" />
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
@@ -18,8 +15,12 @@
       </header>
 
       <div class="main-tabs">
-        <button class="main-tab active" onclick="switchMainTab('rain')">Pluie</button>
-        <button class="main-tab" onclick="switchMainTab('temp')">Température</button>
+        <button class="main-tab active" onclick="switchMainTab('rain')">
+          Pluie
+        </button>
+        <button class="main-tab" onclick="switchMainTab('temp')">
+          Température
+        </button>
       </div>
 
       <div id="rainContent" class="tab-content active">
@@ -29,10 +30,18 @@
             <div class="date-display" id="currentDateRain"></div>
             <div class="input-section">
               <div class="input-group">
-                <input type="number" id="rainfallInput" placeholder="0" min="0" step="0.1" />
+                <input
+                  type="number"
+                  id="rainfallInput"
+                  placeholder="0"
+                  min="0"
+                  step="0.1"
+                />
                 <span class="unit">mm</span>
               </div>
-              <button class="btn-primary" onclick="saveRainfall()">Enregistrer</button>
+              <button class="btn-primary" onclick="saveRainfall()">
+                Enregistrer
+              </button>
             </div>
             <div class="stats">
               <div class="stat-box">
@@ -53,8 +62,12 @@
           <!-- Graphique Pluie -->
           <div class="card">
             <div class="tabs">
-              <button class="tab active" onclick="switchChart('month')">Ce mois</button>
-              <button class="tab" onclick="switchChart('year')">Cette année</button>
+              <button class="tab active" onclick="switchChart('month')">
+                Ce mois
+              </button>
+              <button class="tab" onclick="switchChart('year')">
+                Cette année
+              </button>
             </div>
             <div class="chart-container">
               <canvas id="rainfallChart"></canvas>
@@ -64,7 +77,15 @@
 
         <!-- Historique Pluie -->
         <div class="card">
-          <h2 style="font-family: 'Crimson Pro', serif; color: var(--rain-dark); margin-bottom: 15px;">Historique Pluie</h2>
+          <h2
+            style="
+              font-family: &quot;Crimson Pro&quot;, serif;
+              color: var(--rain-dark);
+              margin-bottom: 15px;
+            "
+          >
+            Historique Pluie
+          </h2>
           <div class="history-list" id="historyList"></div>
         </div>
       </div>
@@ -76,26 +97,54 @@
             <div class="date-display" id="currentDateTemp"></div>
             <div class="input-section">
               <div class="input-group">
-                <input type="number" id="tempMorningInput" placeholder="Matin" step="0.1" />
+                <input
+                  type="number"
+                  id="tempMorningInput"
+                  placeholder="Matin"
+                  step="0.1"
+                />
                 <span class="unit">°C</span>
               </div>
               <div class="input-group">
-                <input type="number" id="tempAfternoonInput" placeholder="Après-midi" step="0.1" />
+                <input
+                  type="number"
+                  id="tempAfternoonInput"
+                  placeholder="Après-midi"
+                  step="0.1"
+                />
                 <span class="unit">°C</span>
               </div>
-              <button class="btn-primary" onclick="saveTemperature()">Enregistrer</button>
+              <button class="btn-primary" onclick="saveTemperature()">
+                Enregistrer
+              </button>
             </div>
           </div>
 
           <!-- Graphiques Température -->
           <div class="card">
-            <h2 style="font-family: 'Crimson Pro', serif; color: var(--rain-dark); margin-bottom: 15px;">Graphique Matin</h2>
+            <h2
+              style="
+                font-family: &quot;Crimson Pro&quot;, serif;
+                color: var(--rain-dark);
+                margin-bottom: 15px;
+              "
+            >
+              Graphique Matin
+            </h2>
             <div class="chart-container">
               <canvas id="tempMorningChart"></canvas>
             </div>
           </div>
           <div class="card">
-            <h2 style="font-family: 'Crimson Pro', serif; color: var(--rain-dark); margin-bottom: 15px;">Graphique Après-midi</h2>
+            <h2
+              style="
+                font-family: &quot;Crimson Pro&quot;, serif;
+                color: var(--rain-dark);
+                margin-bottom: 15px;
+              "
+            >
+              Graphique Après-midi
+            </h2>
             <div class="chart-container">
               <canvas id="tempAfternoonChart"></canvas>
             </div>
@@ -105,16 +154,41 @@
 
       <!-- Actions d'export/import (commun) -->
       <div class="card">
-        <h2 style="font-family: 'Crimson Pro', serif; color: var(--rain-dark); margin-bottom: 15px;">Sauvegarde</h2>
+        <h2
+          style="
+            font-family: &quot;Crimson Pro&quot;, serif;
+            color: var(--rain-dark);
+            margin-bottom: 15px;
+          "
+        >
+          Sauvegarde
+        </h2>
         <p style="color: var(--text-light); margin-bottom: 20px">
-          Penses à sauvegarder tes données régulièrement pour ne rien perdre en cas de changement.
+          Penses à sauvegarder tes données régulièrement pour ne rien perdre en
+          cas de changement.
         </p>
         <div class="actions">
-          <button class="btn-primary" onclick="exportData()">📥 Exporter mes données</button>
-          <label for="importFile" class="file-upload-label">📤 Importer des données</label>
-          <input type="file" id="importFile" accept=".json" onchange="importData(event)" />
+          <button class="btn-primary" onclick="exportData()">
+            📥 Exporter mes données
+          </button>
+          <label for="importFile" class="file-upload-label"
+            >📤 Importer des données</label
+          >
+          <input
+            type="file"
+            id="importFile"
+            accept=".json"
+            onchange="importData(event)"
+          />
         </div>
-        <p style="margin-top: 15px; font-size: 0.9rem; color: var(--text-light); text-align: center;">
+        <p
+          style="
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            text-align: center;
+          "
+        >
           Dernière sauvegarde : <span id="lastBackup">Jamais</span>
         </p>
       </div>
