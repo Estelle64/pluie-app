@@ -1,22 +1,30 @@
 /**
  * storage.js
- * Gestion du stockage local des données de pluie
+ * Gestion du stockage local des données météo
  */
 
-const STORAGE_KEY = 'rainfall_data';
-let rainfallData = {};
+const WEATHER_DATA_KEY = 'weather_data';
+let weatherData = {
+    rainfall: {},
+    temperature: {}
+};
 
 /**
  * Charger les données depuis localStorage
  */
 function loadData() {
-    const stored = localStorage.getItem(STORAGE_KEY);
+    const stored = localStorage.getItem(WEATHER_DATA_KEY);
     if (stored) {
         try {
-            rainfallData = JSON.parse(stored);
+            const data = JSON.parse(stored);
+            // Fusionner pour assurer la compatibilité ascendante
+            weatherData = {
+                rainfall: data.rainfall || {},
+                temperature: data.temperature || {}
+            };
         } catch (error) {
             console.error('Erreur lors du chargement des données:', error);
-            rainfallData = {};
+            weatherData = { rainfall: {}, temperature: {} };
         }
     }
 }
@@ -26,7 +34,7 @@ function loadData() {
  */
 function saveData() {
     try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(rainfallData));
+        localStorage.setItem(WEATHER_DATA_KEY, JSON.stringify(weatherData));
         localStorage.setItem('last_backup_date', new Date().toISOString());
     } catch (error) {
         console.error('Erreur lors de la sauvegarde:', error);
@@ -34,65 +42,57 @@ function saveData() {
     }
 }
 
-/**
- * Obtenir la valeur de pluie pour une date donnée
- * @param {string} date - Date au format ISO (YYYY-MM-DD)
- * @returns {number} Valeur en mm
- */
+// --- Fonctions Pluie ---
+
 function getRainfallForDate(date) {
-    return rainfallData[date] || 0;
+    return weatherData.rainfall[date] || 0;
 }
 
-/**
- * Enregistrer une valeur de pluie pour une date
- * @param {string} date - Date au format ISO (YYYY-MM-DD)
- * @param {number} value - Valeur en mm
- */
 function setRainfallForDate(date, value) {
-    rainfallData[date] = value;
+    weatherData.rainfall[date] = value;
     saveData();
 }
 
-/**
- * Obtenir toutes les dates enregistrées triées
- * @param {boolean} ascending - Tri ascendant si true, descendant si false
- * @returns {Array<string>} Tableau de dates
- */
-function getAllDates(ascending = false) {
-    const dates = Object.keys(rainfallData).sort();
+function getAllRainfallDates(ascending = false) {
+    const dates = Object.keys(weatherData.rainfall).sort();
     return ascending ? dates : dates.reverse();
 }
 
-/**
- * Obtenir le total de pluie pour une période
- * @param {Date} startDate - Date de début
- * @param {Date} endDate - Date de fin
- * @returns {number} Total en mm
- */
-function getTotalForPeriod(startDate, endDate) {
+function getTotalRainfallForPeriod(startDate, endDate) {
     let total = 0;
-    
-    Object.keys(rainfallData).forEach(dateStr => {
+    Object.keys(weatherData.rainfall).forEach(dateStr => {
         const date = new Date(dateStr);
         if (date >= startDate && date <= endDate) {
-            total += rainfallData[dateStr];
+            total += weatherData.rainfall[dateStr];
         }
     });
-    
     return total;
 }
 
+// --- Fonctions Température ---
+
+function getTemperatureForDate(date) {
+    return weatherData.temperature[date] || { morning: null, afternoon: null };
+}
+
+function setTemperatureForDate(date, morning, afternoon) {
+    weatherData.temperature[date] = { morning, afternoon };
+    saveData();
+}
+
+// --- Fonctions communes ---
+
 /**
- * Exporter les données en JSON
+ * Exporter toutes les données en JSON
  */
 function exportData() {
     try {
-        const dataStr = JSON.stringify(rainfallData, null, 2);
+        const dataStr = JSON.stringify(weatherData, null, 2);
         const dataBlob = new Blob([dataStr], { type: 'application/json' });
         const url = URL.createObjectURL(dataBlob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = `pluie-donnees-${new Date().toISOString().split('T')[0]}.json`;
+        link.download = `meteo-donnees-${new Date().toISOString().split('T')[0]}.json`;
         link.click();
         URL.revokeObjectURL(url);
 
@@ -107,7 +107,6 @@ function exportData() {
 
 /**
  * Importer des données depuis un fichier JSON
- * @param {Event} event - Événement du file input
  */
 function importData(event) {
     const file = event.target.files[0];
@@ -117,20 +116,25 @@ function importData(event) {
     reader.onload = function(e) {
         try {
             const imported = JSON.parse(e.target.result);
-            
-            // Valider que c'est bien un objet avec des dates
             if (typeof imported !== 'object' || imported === null) {
                 throw new Error('Format invalide');
             }
             
-            // Fusionner avec les données existantes
-            rainfallData = { ...rainfallData, ...imported };
+            // Fusionner les données importées
+            if (imported.rainfall) {
+                weatherData.rainfall = { ...weatherData.rainfall, ...imported.rainfall };
+            }
+            if (imported.temperature) {
+                weatherData.temperature = { ...weatherData.temperature, ...imported.temperature };
+            }
+
             saveData();
             
-            // Rafraîchir l'interface
+            // Rafraîchir toute l'interface
             updateStats();
             updateHistory();
             updateChart();
+            updateTemperatureCharts();
             
             showNotification('✓ Données importées avec succès !', 'success');
         } catch (error) {
@@ -168,23 +172,21 @@ function checkBackupReminder() {
     updateLastBackupDisplay();
     
     const lastExport = localStorage.getItem('last_export_date');
-    
-    // Si jamais exporté et qu'il y a des données
-    if (!lastExport) {
-        const hasData = Object.keys(rainfallData).length > 0;
-        if (hasData) {
-            setTimeout(() => {
-                showNotification('💡 N\'oubliez pas de sauvegarder vos données !', 'warning');
-            }, 2000);
-        }
+    const hasData = Object.keys(weatherData.rainfall).length > 0 || Object.keys(weatherData.temperature).length > 0;
+
+    if (!lastExport && hasData) {
+        setTimeout(() => {
+            showNotification('💡 N\'oubliez pas de sauvegarder vos données !', 'warning');
+        }, 2000);
         return;
     }
 
-    // Si dernière sauvegarde > 30 jours
-    const daysSinceBackup = (Date.now() - new Date(lastExport)) / (1000 * 60 * 60 * 24);
-    if (daysSinceBackup > 30) {
-        setTimeout(() => {
-            showNotification('⚠️ Dernière sauvegarde il y a plus d\'un mois !', 'warning');
-        }, 2000);
+    if (lastExport) {
+        const daysSinceBackup = (Date.now() - new Date(lastExport)) / (1000 * 60 * 60 * 24);
+        if (daysSinceBackup > 30) {
+            setTimeout(() => {
+                showNotification('⚠️ Dernière sauvegarde il y a plus d\'un mois !', 'warning');
+            }, 2000);
+        }
     }
 }

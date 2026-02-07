@@ -81,6 +81,7 @@ body::before {
   min-width: 480px;
 }
 
+
 /* Header */
 header {
   text-align: center;
@@ -429,7 +430,76 @@ input[type="file"] {
     width: 120px;
   }
 
-  .stats {
-    grid-template-columns: 1fr;
+      .stats {
+
+          grid-template-columns: 1fr;
+
+      }
+
   }
-}
+
+  
+
+  /* Main Tab Layout */
+
+  .main-tabs {
+
+      display: flex;
+
+      justify-content: center;
+
+      gap: 15px;
+
+      margin-bottom: 30px;
+
+  }
+
+  
+
+  .main-tab {
+
+      font-size: 1.2rem;
+
+      padding: 12px 30px;
+
+      background: var(--white);
+
+      color: var(--rain-blue);
+
+      border: 2px solid var(--sky-med);
+
+      box-shadow: none;
+
+  }
+
+  
+
+  .main-tab.active {
+
+      background: linear-gradient(135deg, var(--rain-blue), var(--rain-dark));
+
+      color: var(--white);
+
+      border-color: var(--rain-blue);
+
+  }
+
+  
+
+  .tab-content {
+
+      display: none;
+
+  }
+
+  
+
+  .tab-content.active {
+
+      display: block;
+
+      animation: fadeInUp 0.5s ease;
+
+  }
+
+  

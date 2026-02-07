@@ -114,7 +114,7 @@ function updateChart(period = 'month') {
             
             const monthStart = new Date(now.getFullYear(), i, 1);
             const monthEnd = new Date(now.getFullYear(), i + 1, 0);
-            const monthTotal = getTotalForPeriod(monthStart, monthEnd);
+            const monthTotal = getTotalRainfallForPeriod(monthStart, monthEnd);
             
             data.push(monthTotal);
         }
