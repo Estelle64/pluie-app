@@ -11,8 +11,7 @@ function updateCurrentDate() {
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     const formattedDate = today.toLocaleDateString('fr-FR', options);
     
-    const dateElementRain = document.getElementById('currentDateRain');
-    if (dateElementRain) dateElementRain.textContent = formattedDate;
+
 
     const dateElementTemp = document.getElementById('currentDateTemp');
     if (dateElementTemp) dateElementTemp.textContent = formattedDate;
@@ -81,21 +80,26 @@ function updateHistory() {
  * Enregistrer une nouvelle mesure de pluie
  */
 function saveRainfall() {
-    const input = document.getElementById('rainfallInput');
-    if (!input) return;
+    const rainfallInput = document.getElementById('rainfallInput');
+    const rainfallDateInput = document.getElementById('rainfallDateInput');
+    if (!rainfallInput || !rainfallDateInput) return;
     
-    const value = parseFloat(input.value);
+    const value = parseFloat(rainfallInput.value);
+    const date = rainfallDateInput.value; // Get date from input
 
     if (isNaN(value) || value < 0) {
         showNotification('Veuillez entrer une valeur valide', 'warning');
         return;
     }
+    if (!date) { // Check if date is selected
+        showNotification('Veuillez sélectionner une date', 'warning');
+        return;
+    }
 
-    const today = new Date().toISOString().split('T')[0];
-    setRainfallForDate(today, value);
+    setRainfallForDate(date, value); // Use selected date
 
-    showNotification('✓ Pluie enregistrée !', 'success');
-    input.value = value; // Keep value in input after saving for the day
+    showNotification(`✓ Pluie (${date}) enregistrée !`, 'success');
+    rainfallInput.value = value; // Keep value in input after saving for the day
     
     updateStats();
     updateHistory();
@@ -118,25 +122,34 @@ function showNotification(message, type = 'success') {
 }
 
 /**
- * Pré-remplir les champs de saisie avec les données du jour
+ * Pré-remplir les champs de saisie avec les données du jour ou de la date sélectionnée
  */
 function fillTodaysInputs() {
-    const today = new Date().toISOString().split('T')[0];
+    const today = new Date();
+    const todayISO = today.toISOString().split('T')[0];
 
     // Pluie
     const rainfallInput = document.getElementById('rainfallInput');
-    if (rainfallInput) {
-        const todayRain = getRainfallForDate(today);
-        if (todayRain > 0) rainfallInput.value = todayRain;
+    const rainfallDateInput = document.getElementById('rainfallDateInput');
+    if (rainfallInput && rainfallDateInput) {
+        // Set date input to today's date if not already set
+        if (!rainfallDateInput.value) {
+            rainfallDateInput.value = todayISO;
+        }
+        
+        // Load data for the selected date
+        const selectedDate = rainfallDateInput.value;
+        const rainValue = getRainfallForDate(selectedDate);
+        rainfallInput.value = rainValue > 0 ? rainValue : '';
     }
 
     // Température
     const tempMorningInput = document.getElementById('tempMorningInput');
     const tempAfternoonInput = document.getElementById('tempAfternoonInput');
     if (tempMorningInput && tempAfternoonInput) {
-        const todayTemp = getTemperatureForDate(today);
-        if (todayTemp.morning !== null) tempMorningInput.value = todayTemp.morning;
-        if (todayTemp.afternoon !== null) tempAfternoonInput.value = todayTemp.afternoon;
+        const todayTemp = getTemperatureForDate(todayISO); // Always for today's temp
+        tempMorningInput.value = todayTemp.morning !== null ? todayTemp.morning : '';
+        tempAfternoonInput.value = todayTemp.afternoon !== null ? todayTemp.afternoon : '';
     }
 }
 
@@ -156,4 +169,7 @@ function initUIEvents() {
     document.getElementById('tempAfternoonInput')?.addEventListener('keypress', e => {
         if (e.key === 'Enter') saveTemperature();
     });
+
+    // Event listener pour le changement de date de pluie
+    document.getElementById('rainfallDateInput')?.addEventListener('change', fillTodaysInputs);
 }
