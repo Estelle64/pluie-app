@@ -452,16 +452,20 @@ input[type="file"] {
 
   /* Onglets principaux plus compacts */
   .main-tabs {
-    justify-content: flex-start;
+    display: flex;
     overflow-x: auto;
-    white-space: nowrap;
-    padding: 0 10px 10px;
-    gap: 10px;
     -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+    gap: 10px;
+    padding: 0 10px 10px;
+    scroll-behavior: smooth;
+    touch-action: pan-x;
   }
+
   .main-tab {
     flex: 0 0 auto;
-    font-size: 0.95rem;
+    white-space: nowrap;
+    text-align: center;
     padding: 10px 16px;
     border-radius: 999px;
   }
@@ -528,7 +532,12 @@ input[type="file"] {
   padding-bottom: 0;
   margin-bottom: 0;
   overflow: hidden;
-  transition: opacity 0.5s ease-in-out, max-height 0.5s ease-in-out, padding 0.5s ease-in-out, margin 0.5s ease-in-out, visibility 0.5s step-end;
+  transition:
+    opacity 0.5s ease-in-out,
+    max-height 0.5s ease-in-out,
+    padding 0.5s ease-in-out,
+    margin 0.5s ease-in-out,
+    visibility 0.5s step-end;
 }
 
 .tab-content.active {
@@ -539,6 +548,11 @@ input[type="file"] {
   padding-bottom: 20px; /* Restore body padding or adjust as needed */
   margin-bottom: 30px; /* Restore default margin for container children */
   overflow: visible;
-  transition: opacity 0.5s ease-in-out, max-height 0.5s ease-in-out, padding 0.5s ease-in-out, margin 0.5s ease-in-out, visibility 0.5s step-start;
+  transition:
+    opacity 0.5s ease-in-out,
+    max-height 0.5s ease-in-out,
+    padding 0.5s ease-in-out,
+    margin 0.5s ease-in-out,
+    visibility 0.5s step-start;
   animation: fadeInUp 0.5s ease; /* Keep the existing animation */
 }
