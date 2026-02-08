@@ -6,15 +6,16 @@
 /**
  * Initialiser l'application au chargement de la page
  */
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() { // Made async
     console.log('🌦️ Journal Météo - Application démarrée');
     
     // 1. Charger les données du localStorage
-    loadData();
+    await loadData(); // Await the data loading
     
     // 2. Initialiser l'interface
     // updateCurrentDate(); // No longer needed, as date inputs are handled by fillTodaysInputs()
-    updateStats();
+    updateStats(); // For rainfall stats
+    updateWattStats(); // For watt stats
     
     // 3. Initialiser les graphiques
     initChart();
@@ -55,6 +56,7 @@ function switchMainTab(tabName) {
         fillTodaysInputs(); // Ensure inputs for watt tab are up-to-date
         updateWattChart();
         updateWattHistory();
+        updateWattStats(); // Update stats when switching to watt tab
     } else if (tabName === 'comment') {
         fillTodaysInputs(); // Ensure inputs for comment tab are up-to-date
         updateCommentHistory();
@@ -113,6 +115,7 @@ function saveWatt() {
     
     updateWattChart();
     updateWattHistory();
+    updateWattStats(); // Update stats after saving watt data
 }
 
 /**

@@ -78,6 +78,28 @@ function updateHistory() {
 }
 
 /**
+ * Mettre à jour les statistiques de production solaire affichées
+ */
+function updateWattStats() {
+    const today = new Date().toISOString().split("T")[0];
+    const now = new Date();
+
+    const todayValue = getWattForDate(today);
+    const todayElement = document.getElementById("todayWattValue");
+    if (todayElement) todayElement.textContent = todayValue.toFixed(1);
+
+    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+    const monthTotal = getTotalWattForPeriod(monthStart, now);
+    const monthElement = document.getElementById("monthWattTotal");
+    if (monthElement) monthElement.textContent = monthTotal.toFixed(1);
+
+    const yearStart = new Date(now.getFullYear(), 0, 1);
+    const yearTotal = getTotalWattForPeriod(yearStart, now);
+    const yearElement = document.getElementById("yearWattTotal");
+    if (yearElement) yearElement.textContent = yearTotal.toFixed(1);
+}
+
+/**
  * Mettre à jour l'historique des entrées de watts
  */
 function updateWattHistory() {
@@ -118,6 +140,7 @@ function updateWattHistory() {
     })
     .join("");
 }
+
 
 /**
  * Mettre à jour l'historique des commentaires
