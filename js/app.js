@@ -25,6 +25,12 @@ document.addEventListener('DOMContentLoaded', async function() { // Made async
     // 4. Initialiser les événements UI
     initUIEvents();
     
+    // Set initial value for mobile select
+    const mainTabSelect = document.getElementById('mainTabSelect');
+    if (mainTabSelect) {
+        mainTabSelect.value = 'rain'; // Assuming 'rain' is the default active tab
+    }
+
     // 5. Vérifier les rappels de sauvegarde
     checkBackupReminder();
     
@@ -36,9 +42,18 @@ document.addEventListener('DOMContentLoaded', async function() { // Made async
  * @param {string} tabName - 'rain', 'temp', 'watt', ou 'comment'
  */
 function switchMainTab(tabName) {
-    // Gérer les onglets
+    // Gérer les onglets (boutons desktop)
     document.querySelectorAll('.main-tab').forEach(tab => tab.classList.remove('active'));
-    document.querySelector(`.main-tab[onclick="switchMainTab('${tabName}')"]`).classList.add('active');
+    const activeDesktopTab = document.querySelector(`.main-tab[onclick="switchMainTab('${tabName}')"]`);
+    if (activeDesktopTab) {
+        activeDesktopTab.classList.add('active');
+    }
+
+    // Gérer le select mobile
+    const mainTabSelect = document.getElementById('mainTabSelect');
+    if (mainTabSelect) {
+        mainTabSelect.value = tabName;
+    }
 
     // Gérer le contenu
     document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));

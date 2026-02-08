@@ -366,7 +366,7 @@ input[type="file"] {
   border-left-color: #e8a15c;
 }
 
-/* État vide */
+/* État empty-state */
 .empty-state {
   text-align: center;
   padding: 60px 20px;
@@ -416,9 +416,6 @@ input[type="file"] {
 
 /* Responsive */
 @media (max-width: 600px) {
-  .main-tabs::-webkit-scrollbar {
-    display: none;
-  }
   body {
     padding: 10px; /* Moins de padding sur les petits écrans */
   }
@@ -452,20 +449,18 @@ input[type="file"] {
 
   /* Onglets principaux plus compacts */
   .main-tabs {
-    display: flex;
+    justify-content: flex-start;
     overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
     white-space: nowrap;
-    gap: 10px;
     padding: 0 10px 10px;
+    gap: 10px;
+    -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
     touch-action: pan-x;
   }
-
   .main-tab {
     flex: 0 0 auto;
-    white-space: nowrap;
-    text-align: center;
+    font-size: 0.95rem;
     padding: 10px 16px;
     border-radius: 999px;
   }
@@ -502,20 +497,62 @@ input[type="file"] {
 }
 
 /* Main Tab Layout */
-.main-tabs {
+.main-tabs-desktop {
   display: flex;
   justify-content: center;
   gap: 15px;
   margin-bottom: 30px;
 }
 
+.main-tabs-mobile {
+  display: none; /* Hidden by default on desktop */
+}
+
+.main-tabs-mobile select {
+  width: 100%;
+  padding: 12px 20px;
+  margin-bottom: 20px;
+  border: 2px solid var(--sky-med);
+  border-radius: 12px;
+  background-color: var(--white);
+  font-family: "Karla", sans-serif;
+  font-size: 1.1rem;
+  color: var(--rain-dark);
+  appearance: none; /* Remove default browser styling */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%232d3e50" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px var(--shadow);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.main-tabs-mobile select:hover {
+  border-color: var(--rain-blue);
+  box-shadow: 0 6px 20px rgba(44, 95, 122, 0.3);
+}
+
+.main-tabs-mobile select:focus {
+  outline: none;
+  border-color: var(--rain-blue);
+  box-shadow: 0 0 0 4px rgba(90, 154, 184, 0.2);
+}
+
+
 .main-tab {
+  flex-shrink: 0;
   font-size: 1.2rem;
   padding: 12px 30px;
   background: var(--white);
   color: var(--rain-blue);
   border: 2px solid var(--sky-med);
-  box-shadow: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px var(--shadow);
 }
 
 .main-tab.active {
@@ -524,35 +561,26 @@ input[type="file"] {
   border-color: var(--rain-blue);
 }
 
+.main-tab:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(44, 95, 122, 0.3);
+}
+
 .tab-content {
-  opacity: 0;
-  visibility: hidden;
-  max-height: 0; /* Initially collapse content */
-  padding-top: 0;
-  padding-bottom: 0;
-  margin-bottom: 0;
-  overflow: hidden;
-  transition:
-    opacity 0.5s ease-in-out,
-    max-height 0.5s ease-in-out,
-    padding 0.5s ease-in-out,
-    margin 0.5s ease-in-out,
-    visibility 0.5s step-end;
+  display: none;
 }
 
 .tab-content.active {
-  opacity: 1;
-  visibility: visible;
-  max-height: 2000px; /* Large enough to contain any tab content */
-  padding-top: 20px; /* Restore body padding or adjust as needed */
-  padding-bottom: 20px; /* Restore body padding or adjust as needed */
-  margin-bottom: 30px; /* Restore default margin for container children */
-  overflow: visible;
-  transition:
-    opacity 0.5s ease-in-out,
-    max-height 0.5s ease-in-out,
-    padding 0.5s ease-in-out,
-    margin 0.5s ease-in-out,
-    visibility 0.5s step-start;
-  animation: fadeInUp 0.5s ease; /* Keep the existing animation */
+  display: block;
+  animation: fadeInUp 0.5s ease;
+}
+
+@media (max-width: 600px) {
+  .main-tabs-desktop {
+    display: none; /* Hide desktop buttons on mobile */
+  }
+
+  .main-tabs-mobile {
+    display: block; /* Show mobile select on mobile */
+  }
 }

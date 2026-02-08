@@ -18,7 +18,15 @@
         <p class="subtitle">Suis la météo au quotidien</p>
       </header>
 
-      <div class="main-tabs">
+      <div class="main-tabs-mobile">
+        <select id="mainTabSelect" onchange="switchMainTab(this.value)">
+          <option value="rain">Pluie</option>
+          <option value="temp">Température</option>
+          <option value="watt">Production solaire</option>
+          <option value="comment">Commentaire</option>
+        </select>
+      </div>
+      <div class="main-tabs-desktop">
         <button class="main-tab active" onclick="switchMainTab('rain')">
           Pluie
         </button>
