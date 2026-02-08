@@ -1,0 +1,21 @@
+{
+  "name": "Journal Météo",
+  "short_name": "Météo",
+  "description": "Application pour suivre la météo quotidienne",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#e8f4f8",
+  "theme_color": "#5a9ab8",
+  "icons": [
+    {
+      "src": "image/meteo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "image/meteo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
