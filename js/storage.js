@@ -7,7 +7,8 @@ const WEATHER_DATA_KEY = 'weather_data';
 let weatherData = {
     rainfall: {},
     temperature: {},
-    comments: {} // Nouvelle clé pour les commentaires
+    comments: {},
+    watts: {} // Nouvelle clé pour les watts
 };
 
 /**
@@ -22,11 +23,12 @@ function loadData() {
             weatherData = {
                 rainfall: data.rainfall || {},
                 temperature: data.temperature || {},
-                comments: data.comments || {} // Charger les commentaires
+                comments: data.comments || {}, // Charger les commentaires
+                watts: data.watts || {} // Charger les watts
             };
         } catch (error) {
             console.error('Erreur lors du chargement des données:', error);
-            weatherData = { rainfall: {}, temperature: {}, comments: {} };
+            weatherData = { rainfall: {}, temperature: {}, comments: {}, watts: {} };
         }
     }
 }
@@ -97,6 +99,38 @@ function setCommentForDate(date, comment) {
     saveData();
 }
 
+function getAllCommentDates(ascending = false) {
+    const dates = Object.keys(weatherData.comments).sort();
+    return ascending ? dates : dates.reverse();
+}
+
+// --- Fonctions Watts ---
+
+function getWattForDate(date) {
+    return weatherData.watts[date] || 0;
+}
+
+function setWattForDate(date, value) {
+    weatherData.watts[date] = value;
+    saveData();
+}
+
+function getAllWattDates(ascending = false) {
+    const dates = Object.keys(weatherData.watts).sort();
+    return ascending ? dates : dates.reverse();
+}
+
+function getTotalWattForPeriod(startDate, endDate) {
+    let total = 0;
+    Object.keys(weatherData.watts).forEach(dateStr => {
+        const date = new Date(dateStr);
+        if (date >= startDate && date <= endDate) {
+            total += weatherData.watts[dateStr];
+        }
+    });
+    return total;
+}
+
 // --- Fonctions communes ---
 
 /**
@@ -144,8 +178,11 @@ function importData(event) {
             if (imported.temperature) {
                 weatherData.temperature = { ...weatherData.temperature, ...imported.temperature };
             }
-            if (imported.comments) { // Fusionner les commentaires
+            if (imported.comments) {
                 weatherData.comments = { ...weatherData.comments, ...imported.comments };
+            }
+            if (imported.watts) { // Fusionner les watts
+                weatherData.watts = { ...weatherData.watts, ...imported.watts };
             }
 
             saveData();
@@ -155,6 +192,7 @@ function importData(event) {
             updateHistory();
             updateChart();
             updateTemperatureCharts();
+            updateWattCharts(); // Nouvelle fonction à créer
             fillTodaysInputs(); // Mettre à jour les inputs après import
 
             showNotification('✓ Données importées avec succès !', 'success');
@@ -193,7 +231,7 @@ function checkBackupReminder() {
     updateLastBackupDisplay();
     
     const lastExport = localStorage.getItem('last_export_date');
-    const hasData = Object.keys(weatherData.rainfall).length > 0 || Object.keys(weatherData.temperature).length > 0 || Object.keys(weatherData.comments).length > 0;
+    const hasData = Object.keys(weatherData.rainfall).length > 0 || Object.keys(weatherData.temperature).length > 0 || Object.keys(weatherData.comments).length > 0 || Object.keys(weatherData.watts).length > 0;
 
     if (!lastExport && hasData) {
         setTimeout(() => {
