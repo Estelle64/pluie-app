@@ -4,17 +4,17 @@ Application web pour suivre divers paramètres météorologiques et énergétiqu
 
 ## ✨ Fonctionnalités
 
--   ✅ **Suivi complet :** Enregistrement des précipitations (mm), des températures (matin/après-midi en °C), et de la production solaire (kWh).
--   ✅ **Commentaires quotidiens :** Ajoutez des notes ou observations pour chaque jour.
--   ✅ **Interface à onglets :** Navigation facile entre les sections "Pluie", "Température", "Production solaire" et "Commentaire".
--   ✅ **Statistiques en temps réel :** Aperçu rapide des données pour "aujourd'hui", "ce mois" et "cette année" sur chaque onglet pertinent.
--   ✅ **Graphiques interactifs :** Visualisation des tendances mensuelles et annuelles pour les précipitations, les températures (matin/après-midi) et la production solaire.
--   ✅ **Sélecteurs de date intuitifs :** Choisissez facilement la date d'enregistrement pour toutes les saisies.
--   ✅ **Historiques détaillés :** Affichez les dernières entrées pour chaque type de donnée.
--   ✅ **Export/Import des données :** Sauvegardez et restaurez toutes vos données au format JSON.
--   ✅ **Rappels de sauvegarde automatiques :** Une notification vous invite à exporter vos données si elles n'ont pas été sauvegardées récemment.
--   ✅ **Interface responsive :** Adaptée aux téléphones, tablettes et ordinateurs.
--   ✅ **Fonctionne hors ligne :** Après le premier chargement, l'application est opérationnelle sans connexion internet.
+-   **Suivi complet :** Enregistrement des précipitations (mm), des températures (matin/après-midi en °C), et de la production solaire (kWh).
+-   **Commentaires quotidiens :** Ajoutez des notes ou observations pour chaque jour.
+-   **Interface à onglets :** Navigation facile entre les sections "Pluie", "Température", "Production solaire" et "Commentaire".
+-   **Statistiques en temps réel :** Aperçu rapide des données pour "aujourd'hui", "ce mois" et "cette année" sur chaque onglet pertinent.
+-   **Graphiques interactifs :** Visualisation des tendances mensuelles et annuelles pour les précipitations, les températures (matin/après-midi) et la production solaire.
+-   **Sélecteurs de date intuitifs :** Choisissez facilement la date d'enregistrement pour toutes les saisies.
+-   **Historiques détaillés :** Affichez les dernières entrées pour chaque type de donnée.
+-   **Export/Import des données :** Sauvegardez et restaurez toutes vos données au format JSON.
+-   **Rappels de sauvegarde automatiques :** Une notification vous invite à exporter vos données si elles n'ont pas été sauvegardées récemment.
+-   **Interface responsive :** Adaptée aux téléphones, tablettes et ordinateurs.
+-   **Fonctionne hors ligne :** Après le premier chargement, l'application est opérationnelle sans connexion internet.
 
 ## 🛠️ Technologies utilisées
 
@@ -27,7 +27,7 @@ Application web pour suivre divers paramètres météorologiques et énergétiqu
 
 ## 🚀 Installation
 
-Accédez à l'application via votre navigateur en saisissant l'URL suivante : https://estelle64.github.io/journal_meteo-app/.
+Accédez à l'application via votre navigateur en saisissant l'URL suivante : https://estelle64.github.io/journal-meteo/.
 
 ## 📁 Structure du projet
 
@@ -85,4 +85,4 @@ Libre d'utilisation et de modification.
 
 ## 👤 Auteur
 
-Créé pour suivre les paramètres météorologiques quotidiens de manière simple et élégante.
+Créé pour suivre les paramètres météorologiques quotidiens de manière simple et élégante. Développé par IA. 
